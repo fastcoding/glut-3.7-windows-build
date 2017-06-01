@@ -1,0 +1,50 @@
+# Makefile for Win32
+
+# defines
+SUBDIRS0= demos.dir mui.dir  spheremap.dir
+SUBDIRS1= advanced.dir contrib.dir examples.dir mesademos.dir redbook.dir  \
+	texfont.dir gle.dir gameglut.dir bucciarelli.dir advanced97.dir
+SUBDIRS = $(SUBDIRS0) $(SUBDIRS1)
+CLEAN	= $(SUBDIRS:.dir=.clean)
+CLOBBER	= $(SUBDIRS:.dir=.clobber)
+
+
+# default rule
+default	: $(SUBDIRS)
+
+
+# cleanup rules
+clean	: $(CLEAN)
+clobber	: $(CLOBBER)
+
+
+# inference rules
+$(SUBDIRS0)	:
+	@echo.
+	@echo Making in $(MAKEDIR)/$* subdirectory...
+	@cd $*
+	@nmake -f Makefile.win -nologo
+	@cd ..
+$(SUBDIRS1)	:
+	@echo.
+	@echo Making in $(MAKEDIR)/$* subdirectory...
+	@cd $*
+	@nmake -f Makefile.win -nologo install
+	@cd ..
+	
+$(CLEAN)	:
+	@del *~
+	@echo.
+	@echo Cleaning in $* subdirectory...
+	@cd $*
+	@nmake -f Makefile.win -nologo clean
+	@cd ..
+
+$(CLOBBER)	:
+	@echo.
+	@echo Clobbering in $* subdirectory...
+	@cd $*
+	@nmake -f Makefile.win -nologo clobber
+	@cd ..
+
+

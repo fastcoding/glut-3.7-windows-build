@@ -1,0 +1,8 @@
+# Makefile for Win32
+
+TOP  = ../../..
+
+!include "$(TOP)/win32.mak"
+SRCS = glutmech.c
+
+!include "$(TOP)/glutwin32.mak"
