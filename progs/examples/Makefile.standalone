@@ -1,0 +1,53 @@
+# Makefile for Win32
+
+GLUT_DIR=D:\software\built\glut3.7\msdev
+GLUT_INC_DIR=$(GLUT_DIR)\include
+GLU    = glu32.lib
+OPENGL = opengl32.lib
+GLUT   = glut32.lib
+CFLAGS = -nologo -I$(GLUT_INC_DIR) -D_WIN32 -DWIN32 $(CFLAGS) 
+LDFLAGS = $(LDFLAGS) -libpath:$(GLUT_DIR:\=/)/lib 
+LIBS =$(GLUT) $(GLU) $(OPENGL)
+
+SRCS = abgr.c bitfont.c blender.c cube.c dials.c dials2.c dinoball.c \
+dinoshade.c dinospin.c evaltest.c fogtst.c fontdemo.c glpuzzle.c \
+glutdino.c glutplane.c halomagic.c highlight.c lightlab.c molehill.c \
+movelight.c oclip.c ohidden.c olight.c olympic.c origami.c oversphere.c \
+ sb2db.c scene.c screendoor.c scube.c simple.c sphere.c sphere2.c spots.c\
+ stars.c stenciltst.c stereo.c stroke.c subwin.c surfgrid.c texenv.c \
+ trippy.c triselect.c zoomdino.c reflectdino.c
+
+# mjkwarp.c spotlogo.c
+OBJS    = $(SRCS:.c=.obj)
+EXES	= $(SRCS:.c=.exe) $(CPPSRCS:.cpp=.exe)
+
+.c.obj:
+	@echo compile: $@ $<
+	$(CC)  $(CFLAGS) /c $<
+	
+.cpp.obj:
+	@echo compile: $@ $<
+	$(CC)  $(CFLAGS) /c $<
+	
+.obj.exe:
+	@echo linking $@.. $<
+	link -out:$@ $** $(LDFLAGS) $(LIBS)
+
+$(OBJS):
+
+# dependencies
+dinospin.exe \
+glpuzzle.exe	: trackball.obj		
+	
+mjkwarp.exe	: mjkimage.obj	
+	
+splatlogo.exe	:splatlogo.obj logo.obj		
+
+glut32.dll:
+		copy $(GLUT_DIR)\bin\$@ .
+		
+clean: 
+	-@del *.obj 2>null
+	-@del *.exe 2>null
+
+all: $(EXES) splatlogo.exe mjkwarp.exe glpuzzle.exe dinospin.exe glut32.dll
